@@ -1,16 +1,17 @@
 const videoElement = document.getElementById("webcam");
-const sendPhotoButton = document.getElementById("send_photo");
 const resultArea = document.getElementById("recognition_result");
-let stream;
+
+let stream; 
+let interval;
 
 async function startWebcam() {
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         const track = stream.getVideoTracks()[0];
         const imageCapture = new ImageCapture(track); 
-        sendPhotoButton.addEventListener("click", async () => {
+
+        const sendPhotoToServer = async () => {
             const imageBlob = await imageCapture.takePhoto();
-            console.log(imageBlob);
 
             const formData = new FormData();
             formData.append("photo", imageBlob);
@@ -20,16 +21,22 @@ async function startWebcam() {
               body: formData,
             });
             const data = await resp.json();
+            console.log(data);
             
             resultArea.innerHTML = '';
 
-            data.forEach(item => {
+            data.detection_results.forEach(item => {
                 const itemText = document.createElement('p');
                 itemText.textContent = `${item.label}: ${item.count}`;
                 resultArea.appendChild(itemText);
             });
-        });
 
+            const recognizedPhotoDiv = document.getElementById("recognized_photo");
+            recognizedPhotoDiv.innerHTML = `<img src="data:image/jpeg;base64,${data.image}" />`;
+
+        };
+
+        interval = setInterval(sendPhotoToServer, 1000);
         videoElement.srcObject = stream;
         videoElement.play();
     } catch (error) {
@@ -37,14 +44,14 @@ async function startWebcam() {
     }
 }
 
-function stopWebcam() {
-    if (stream) {
-        mediaRecorder.stop();
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-        videoElement.srcObject = null;
-    }
-}
+// function stopWebcam() {
+//     if (stream) {
+//         mediaRecorder.stop();
+//         const tracks = stream.getTracks();
+//         tracks.forEach(track => track.stop());
+//         videoElement.srcObject = null;
+//     }
+// }
 
 
 startWebcam();
