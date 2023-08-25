@@ -13,12 +13,10 @@ video, canvas{
     height: 480px;
 }
 
-video{
-    position: fixed;
-}
-
-canvas{
-    position: relative;
+canvas{    
+    position: absolute;
+    top: 0;  
+    margin-top: 8px;  
     z-index: 1;
 }
 

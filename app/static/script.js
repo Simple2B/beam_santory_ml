@@ -1,7 +1,5 @@
 const videoElement = document.getElementById("webcam");
 const resultArea = document.getElementById("recognition_result");
-const startRecognition = document.getElementById("start-recognition");
-const stopRecognition = document.getElementById("stop-recognition");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -42,7 +40,6 @@ async function startWebcam() {
             body: formData,
         });
         const data = await resp.json();
-        console.log(data);
         
         resultArea.innerHTML = '';
 
@@ -87,11 +84,7 @@ async function startWebcam() {
     videoElement.srcObject = stream;
     videoElement.play();  
     
-    startRecognition.addEventListener("click", () =>{ interval = setInterval(sendPhotoToServer, 1000);} )
-    stopRecognition.addEventListener("click", () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        clearInterval(interval);
-    })
+
 }
 
 
