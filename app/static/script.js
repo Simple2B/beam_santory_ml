@@ -9,7 +9,6 @@ canvas.height = videoElement.videoHeight;
 
 let stream; 
 let interval;
-let isImageProcessing = false;
 
 const LABELS_COLORS={
     bar: 'purple',
@@ -35,7 +34,7 @@ async function startWebcam() {
         const formData = new FormData();
         formData.append("photo", imageBlob);
 
-        const resp = await fetch("http://127.0.0.1:5000/photo", {
+        const resp = await fetch("http://127.0.0.1:5001/photo", {
         method: "POST",
             body: formData,
         });
@@ -78,8 +77,19 @@ async function startWebcam() {
         });   
         
     };
- 
-    interval = setInterval(sendPhotoToServer, 1000)
+    
+    let isImageInProcessing = false;
+    const processImage = async () => {
+        if (isImageInProcessing) {
+            return;
+        }
+
+        isImageInProcessing = true;
+        await sendPhotoToServer();
+        isImageInProcessing = false;
+    }
+
+    interval = setInterval(processImage, .1)
 
     videoElement.srcObject = stream;
     videoElement.play();  

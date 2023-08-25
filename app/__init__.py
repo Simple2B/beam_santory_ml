@@ -1,8 +1,5 @@
-import base64
-import json
 from flask import Flask, render_template, request, jsonify
-from PIL import Image, ImageDraw
-import io
+from PIL import Image
 from collections import defaultdict
 from ultralytics import YOLO
 
@@ -18,6 +15,7 @@ def index():
 
 @app.route("/photo", methods=["POST", "GET"])
 def send_photo():
+    print("Received photo")
     photo = request.files.get("photo")
     image = Image.open(photo)
     image = image.convert("RGB")
@@ -47,7 +45,3 @@ def send_photo():
     }
 
     return jsonify(response_data)
-
-
-if __name__ == "__main__":
-    app.run()
