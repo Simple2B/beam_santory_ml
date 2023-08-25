@@ -7,8 +7,12 @@
     <title>Webcam</title>
 </head>
 <body>
-    <div class="cameraWrapper">         
-        <div id="recognized_photo" class="recognitionPhoto"></div>   
+    <div class="cameraWrapper">
+        <button id="start-recognition" class="button">Start recognition</button>
+        <button id="stop-recognition" class="button">Stop recognition</button>    
+        
+        <canvas id="canvas"></canvas>
+        
         <video id="webcam" autoplay></video>   
         <div id="recognition_result" ></div>
     </div>

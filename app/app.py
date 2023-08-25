@@ -27,39 +27,27 @@ def send_photo():
     detected_boxes = result[0].boxes
     class_counts = defaultdict(int)
 
-    draw = ImageDraw.Draw(image)
+    boxes_data = []
 
     for detection in detected_boxes:
         class_index = int(detection.cls)
         class_label = names[class_index]
         class_counts[class_label] += 1
 
-        x1, y1, x2, y2 = detection.xyxy[
-            0
-        ].tolist()  # Assuming xyxy returns a list of boxes
-
-        draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
+        box = detection.xyxy.tolist()  # Convert to a list
+        boxes_data.append({"label": class_label, "box": box})
 
     result_json = [
         {"label": label, "count": count} for label, count in class_counts.items()
     ]
 
-    img_byte_array = io.BytesIO()
-    image.save(img_byte_array, format="JPEG")
-    img_data = img_byte_array.getvalue()
-    img_base64 = base64.b64encode(img_data).decode()
-
     response_data = {
         "detection_results": result_json,
-        "image": img_base64,
+        "boxes_data": boxes_data,
     }
-
-    response = jsonify(response_data)
-    response.headers["Content-Type"] = "application/json"
-    print(response)
 
     return jsonify(response_data)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
