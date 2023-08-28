@@ -12,6 +12,8 @@ ultralytics = "^8.0.158"
 cython = "^3.0.0"
 flask = "^2.3.3"
 torch = ">=2.0.0, !=2.0.1"
+pydantic = "^2.3.0"
+pydantic-settings = "^2.0.3"
 
 
 [build-system]
