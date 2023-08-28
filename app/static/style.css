@@ -8,16 +8,37 @@ button{
     border-radius: 8px;
 }
 
-video, canvas{
+video, #canvas{
     width: 640px;
     height: 480px;
 }
 
-canvas{    
+#canvas{    
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 8px;
+}
+
+#croppedCanvas{
+    position: absolute;
+    top: 0;
+    left: 50%;
+}
+
+#rectangleCanvas{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+}
+
+video{
+    margin-top: 8px;  
     position: absolute;
     top: 0;  
-    margin-top: 8px;  
-    z-index: 1;
+    left: 0;
 }
 
 .recognitionPhoto{
@@ -29,7 +50,7 @@ canvas{
 }
 
 .cameraWrapper{
-    display: flex;
+    /* display: flex; */
     gap:12px;
     flex-direction: column;
     align-items: center;
@@ -41,4 +62,9 @@ canvas{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+}
+#recognition_result{
+    text-align: center;
+    width: 100%;
+    margin-top: 700px;
 }
